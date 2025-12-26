@@ -1,15 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Sum, Count
 from django.utils import timezone
 from orders.models import Order, QuoteRequest
 from resources.models import ResourceDownload
+from django.urls import reverse
+
+@login_required
+def index_view(request):
+    """
+    Main entry point for the dashboard.
+    Redirects staff to Admin Hub and others to User Hub.
+    """
+    if request.user.is_staff:
+        return redirect('dashboard:admin_hub')
+    return redirect('dashboard:user_hub')
 
 @login_required
 def user_dashboard(request):
     """
     Academic hub for students, teachers, and school admins.
     """
+    if request.user.is_staff:
+        return redirect('dashboard:admin_hub')
+        
     user = request.user
     recent_orders = Order.objects.filter(user=user).order_by('-created_at')[:5]
     recent_downloads = ResourceDownload.objects.filter(user=user).select_related('resource').order_by('-downloaded_at')[:5]
@@ -27,6 +41,7 @@ def user_dashboard(request):
 def admin_dashboard(request):
     """
     Operational overview for platform administrators.
+    Integrated shortcuts for all Admin Panel functionalities.
     """
     # Sales Overview
     today = timezone.now().date()

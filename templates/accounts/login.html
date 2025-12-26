@@ -1,63 +1,92 @@
 {% extends 'base.html' %}
 
-{% block title %}Academic Login | Aplus Publications{% endblock %}
+{% block title %}A+ Login | APLUS PUBLICATIONS{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-20">
     <div class="max-w-md mx-auto">
-        <div class="bg-white border p-10 rounded-sm shadow-sm">
+        <div class="bg-white border border-slate-100 p-10 rounded-sm shadow-xl academic-border border-brandSkyBlue">
             <div class="text-center mb-10">
-                <h1 class="text-2xl font-bold tracking-tight text-slate-900 italic uppercase">Academic Login</h1>
-                <p class="text-slate-500 text-xs mt-2 uppercase tracking-widest italic">Institutional Access Portal</p>
+                <h1 class="text-2xl font-black tracking-tighter text-brandDeepBlue italic uppercase">A+ Login</h1>
+                <p class="text-slate-500 text-[10px] mt-2 uppercase tracking-widest italic font-bold">Enter your credentials to access your A+ portal</p>
             </div>
 
             <form method="post" class="space-y-6">
                 {% csrf_token %}
                 
                 {% if form.non_field_errors %}
-                    <div class="bg-red-50 text-red-600 p-3 text-xs rounded-sm mb-6 italic">
+                    <div class="bg-blue-50 text-brandDeepBlue p-3 text-xs rounded-sm mb-6 italic border-l-4 border-brandSkyBlue">
                         {{ form.non_field_errors.0 }}
                     </div>
                 {% endif %}
 
                 <div>
-                    <label for="{{ form.username.id_for_label }}" class="block text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest">Email Address / Username</label>
+                    <label for="{{ form.username.id_for_label }}" class="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-[0.2em]">Email</label>
                     <input type="text" name="username" id="{{ form.username.id_for_label }}" 
-                           class="w-full border border-slate-200 rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-brandGreen focus:ring-1 focus:ring-brandGreen transition"
-                           placeholder="Enter your academic credentials" required>
+                           class="w-full border border-slate-100 rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-brandSkyBlue focus:ring-1 focus:ring-brandSkyBlue transition bg-slate-50 italic"
+                           placeholder="Enter your email" required>
                 </div>
 
-                <div>
+                <div class="relative">
                     <div class="flex justify-between mb-2">
-                        <label for="{{ form.password.id_for_label }}" class="block text-[10px] font-bold uppercase text-slate-400 tracking-widest">Password</label>
-                        <a href="#" class="text-[10px] text-brandBrown font-bold hover:text-brandGreen uppercase">Forgot?</a>
+                        <label for="{{ form.password.id_for_label }}" class="block text-[9px] font-black uppercase text-slate-400 tracking-[0.2em]">Password</label>
+                        <a href="#" class="text-[9px] text-brandSkyBlue font-black hover:text-brandDeepBlue uppercase tracking-widest">Recovery →</a>
                     </div>
-                    <input type="password" name="password" id="{{ form.password.id_for_label }}" 
-                           class="w-full border border-slate-200 rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-brandGreen focus:ring-1 focus:ring-brandGreen transition"
-                           placeholder="••••••••" required>
+                    <div class="relative">
+                        <input type="password" name="password" id="password-field" 
+                               class="w-full border border-slate-100 rounded-sm px-4 py-3 pr-12 text-sm focus:outline-none focus:border-brandSkyBlue focus:ring-1 focus:ring-brandSkyBlue transition bg-slate-50"
+                               placeholder="••••••••" required>
+                        <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-brandSkyBlue transition">
+                            <svg id="eye-show" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <svg id="eye-hide" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="flex items-center">
-                    <input type="checkbox" name="remember" id="remember" class="w-4 h-4 text-brandGreen border-slate-300 rounded focus:ring-brandGreen">
-                    <label for="remember" class="ml-2 text-xs text-slate-500 italic">Keep me logged in for this session</label>
+                    <input type="checkbox" name="remember" id="remember" class="w-4 h-4 text-brandSkyBlue border-slate-300 rounded focus:ring-brandSkyBlue">
+                    <label for="remember" class="ml-2 text-xs text-slate-500 italic">Maintain active session</label>
                 </div>
 
-                <button type="submit" class="w-full bg-brandGreen text-slate-900 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-brandBrown hover:text-white transition shadow-sm">
-                    Initiate Session
+                <button type="submit" class="w-full bg-brandDeepBlue text-white py-4 rounded-sm text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brandSkyBlue transition-all shadow-lg">
+                    Log In
                 </button>
             </form>
 
-            <div class="mt-10 pt-8 border-t text-center">
-                <p class="text-xs text-slate-500 italic mb-4">New to Aplus Publications?</p>
-                <a href="{% url 'accounts:register' %}" class="text-xs font-bold text-brandBrown hover:text-brandGreen uppercase tracking-widest">Create Academic Account</a>
+            <div class="mt-10 pt-8 border-t border-slate-50 text-center">
+                <p class="text-xs text-slate-400 italic mb-4 font-medium">New to Aplus Publications?</p>
+                <a href="{% url 'accounts:register' %}" class="text-[10px] font-black text-brandSkyBlue hover:text-brandDeepBlue uppercase tracking-[0.15em] transition">Create Academic Account</a>
             </div>
         </div>
 
         <div class="mt-8 text-center">
-            <p class="text-[10px] text-slate-400 italic">
+            <p class="text-[9px] text-slate-400 italic font-medium uppercase tracking-widest">
                 Plot 48, Block F, Ahinsan, Kumasi • 020 940 5151
             </p>
         </div>
     </div>
 </div>
+
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById("password-field");
+        const eyeShow = document.getElementById("eye-show");
+        const eyeHide = document.getElementById("eye-hide");
+        
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            eyeShow.classList.add("hidden");
+            eyeHide.classList.remove("hidden");
+        } else {
+            passwordField.type = "password";
+            eyeShow.classList.remove("hidden");
+            eyeHide.classList.add("hidden");
+        }
+    }
+</script>
 {% endblock %}

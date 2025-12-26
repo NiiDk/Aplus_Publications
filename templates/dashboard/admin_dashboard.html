@@ -1,70 +1,107 @@
 {% extends 'base.html' %}
 
-{% block title %}Admin Operational Hub | Aplus Publications{% endblock %}
+{% block title %}Admin Control Centre | APLUS PUBLICATIONS{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <div class="mb-10 border-b pb-6">
-        <h1 class="text-3xl font-bold tracking-tight text-slate-900 italic">ADMIN OPERATIONAL HUB</h1>
-        <p class="text-slate-500 text-sm uppercase tracking-widest mt-1 italic">Institutional Overview & Financial Metrics</p>
-    </div>
-
-    <!-- Stats Overview -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div class="bg-slate-900 text-white p-6 border-l-4 border-brandGreen shadow-sm">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-brandGreen mb-2 italic">Total Sales (Paid)</p>
-            <p class="text-3xl font-bold tracking-tighter">GHS {{ total_sales|floatformat:2 }}</p>
+    <div class="mb-10 border-b border-brandSkyBlue pb-6 flex justify-between items-end">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-brandDeepBlue italic uppercase tracking-tighter">Admin Control Centre</h1>
+            <p class="text-slate-500 text-[10px] uppercase tracking-[0.2em] mt-1 font-bold italic">Full System Operational Hub</p>
         </div>
-        <div class="bg-white p-6 border border-slate-200 border-l-4 border-brandBrown shadow-sm">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 italic">Orders (Today)</p>
-            <p class="text-3xl font-bold tracking-tighter text-slate-900">{{ orders_today }}</p>
-        </div>
-        <div class="bg-white p-6 border border-slate-200 border-l-4 border-brandGreen shadow-sm">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 italic">Pending Bulk Quotes</p>
-            <p class="text-3xl font-bold tracking-tighter text-slate-900">{{ pending_quotes }}</p>
+        <div class="flex items-center space-x-4">
+            <a href="/admin/" target="_blank" class="bg-brandDeepBlue text-white px-6 py-2 rounded-sm text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brandSkyBlue transition-all shadow-lg flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Launch Master Admin
+            </a>
         </div>
     </div>
 
+    <!-- Master Management Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <!-- Textbook Management -->
+        <div class="bg-white border border-slate-100 p-6 rounded-sm shadow-sm hover:shadow-xl transition-all border-l-4 border-l-brandSkyBlue">
+            <h3 class="text-[10px] font-black uppercase tracking-widest text-brandDeepBlue mb-4 italic">Catalogue</h3>
+            <div class="space-y-3">
+                <a href="/admin/shop/textbook/add/" class="block text-xs text-slate-600 hover:text-brandSkyBlue transition italic">Add New Publication →</a>
+                <a href="/admin/shop/textbook/" class="block text-xs text-slate-600 hover:text-brandSkyBlue transition italic">Manage Inventory →</a>
+                <a href="/admin/shop/subject/" class="block text-xs text-slate-600 hover:text-brandSkyBlue transition italic">Academic Subjects →</a>
+            </div>
+        </div>
+
+        <!-- User Management -->
+        <div class="bg-white border border-slate-100 p-6 rounded-sm shadow-sm hover:shadow-xl transition-all border-l-4 border-l-brandSkyBlue">
+            <h3 class="text-[10px] font-black uppercase tracking-widest text-brandDeepBlue mb-4 italic">Constituents</h3>
+            <div class="space-y-3">
+                <a href="/admin/accounts/user/" class="block text-xs text-slate-600 hover:text-brandSkyBlue transition italic">All Academic Users →</a>
+                <a href="/admin/accounts/profile/" class="block text-xs text-slate-600 hover:text-brandSkyBlue transition italic">Institutional Profiles →</a>
+                <a href="/admin/auth/group/" class="block text-xs text-slate-600 hover:text-brandSkyBlue transition italic">Access Groups →</a>
+            </div>
+        </div>
+
+        <!-- Order & Finance -->
+        <div class="bg-white border border-slate-100 p-6 rounded-sm shadow-sm hover:shadow-xl transition-all border-l-4 border-l-brandSkyBlue">
+            <h3 class="text-[10px] font-black uppercase tracking-widest text-brandDeepBlue mb-4 italic">Financials</h3>
+            <div class="space-y-3">
+                <a href="/admin/orders/order/" class="block text-xs text-slate-600 hover:text-brandSkyBlue transition italic">Academic Orders →</a>
+                <a href="/admin/orders/quoterequest/" class="block text-xs text-slate-600 hover:text-brandSkyBlue transition italic">Bulk Quote Requests →</a>
+                <div class="pt-2 border-t mt-2">
+                    <p class="text-[10px] font-bold text-brandSkyBlue italic">Total Sales: GHS {{ total_sales|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content & News -->
+        <div class="bg-white border border-slate-100 p-6 rounded-sm shadow-sm hover:shadow-xl transition-all border-l-4 border-l-brandSkyBlue">
+            <h3 class="text-[10px] font-black uppercase tracking-widest text-brandDeepBlue mb-4 italic">Editorial</h3>
+            <div class="space-y-3">
+                <a href="/admin/blog/post/" class="block text-xs text-slate-600 hover:text-brandSkyBlue transition italic">Insights & Blog →</a>
+                <a href="/admin/news/newsannouncement/" class="block text-xs text-slate-600 hover:text-brandSkyBlue transition italic">Global News →</a>
+                <a href="/admin/resources/resource/" class="block text-xs text-slate-600 hover:text-brandSkyBlue transition italic">GES Resources →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Performance Feed -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Live Order Feed -->
         <div class="lg:col-span-2">
-            <section class="bg-white border rounded-sm shadow-sm overflow-hidden">
-                <div class="bg-slate-50 border-b px-6 py-4 flex justify-between items-center">
-                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-900 italic">Live Academic Order Feed</h2>
-                    <span class="text-[10px] bg-brandGreen text-slate-900 px-2 py-0.5 font-bold uppercase tracking-tighter">System Real-time</span>
+            <section class="bg-white border border-slate-100 rounded-sm shadow-sm overflow-hidden">
+                <div class="bg-brandDeepBlue px-6 py-4 flex justify-between items-center">
+                    <h2 class="text-[10px] font-black uppercase tracking-[0.2em] text-white italic">Recent Platform Transactions</h2>
+                    <span class="text-[8px] bg-brandSkyBlue text-white px-2 py-0.5 font-bold uppercase tracking-widest rounded-full animate-pulse">Live Feed</span>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 text-slate-400 border-b">
+                        <thead class="bg-slate-50 border-b text-slate-400 uppercase text-[9px] font-black tracking-widest">
                             <tr>
-                                <th class="px-6 py-3 font-medium uppercase text-[10px]">Reference</th>
-                                <th class="px-6 py-3 font-medium uppercase text-[10px]">Customer</th>
-                                <th class="px-6 py-3 font-medium uppercase text-[10px]">Status</th>
-                                <th class="px-6 py-3 font-medium uppercase text-[10px] text-right">Total</th>
+                                <th class="px-6 py-4">Reference</th>
+                                <th class="px-6 py-4">Constituent</th>
+                                <th class="px-6 py-4">Status</th>
+                                <th class="px-6 py-4 text-right">Total</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y">
+                        <tbody class="divide-y divide-slate-50">
                             {% for order in recent_orders %}
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 font-mono text-[10px] text-slate-500">#{{ order.order_id|stringformat:".8s" }}</td>
+                            <tr class="hover:bg-blue-50/30 transition-colors cursor-pointer" onclick="window.location='/admin/orders/order/{{ order.id }}/change/'">
+                                <td class="px-6 py-4 font-mono text-[10px] text-slate-400">#{{ order.order_id|stringformat:".12s" }}</td>
                                 <td class="px-6 py-4">
-                                    <p class="font-bold text-slate-800">{{ order.full_name }}</p>
-                                    <p class="text-[10px] text-slate-400">{{ order.email }}</p>
+                                    <p class="font-bold text-slate-800 text-xs italic">{{ order.full_name }}</p>
+                                    <p class="text-[9px] text-brandSkyBlue font-bold uppercase tracking-tighter">{{ order.email }}</p>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-tighter rounded-full 
-                                        {% if order.status == 'PAID' %}bg-green-100 text-green-700
-                                        {% elif order.status == 'PENDING' %}bg-yellow-100 text-yellow-700
-                                        {% else %}bg-slate-100 text-slate-700{% endif %}">
+                                    <span class="px-2 py-0.5 text-[8px] font-black uppercase tracking-widest rounded-full 
+                                        {% if order.status == 'PAID' %}bg-blue-50 text-brandDeepBlue border border-brandSkyBlue
+                                        {% else %}bg-slate-50 text-slate-400 border border-slate-100{% endif %}">
                                         {{ order.get_status_display }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-right font-bold text-slate-900 italic">GHS {{ order.total_amount }}</td>
+                                <td class="px-6 py-4 text-right font-black text-brandDeepBlue italic text-xs tracking-tighter">GHS {{ order.total_amount }}</td>
                             </tr>
                             {% empty %}
-                            <tr>
-                                <td colspan="4" class="px-6 py-12 text-center text-slate-400 italic">No orders recorded in the system yet.</td>
-                            </tr>
+                            <tr><td colspan="4" class="px-6 py-12 text-center text-slate-300 italic text-xs">No transaction records found.</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -72,38 +109,28 @@
             </section>
         </div>
 
-        <!-- Content Quick Links -->
+        <!-- Communication Feed -->
         <div class="space-y-6">
-            <section class="bg-white border p-6 rounded-sm shadow-sm">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-brandBrown mb-6 italic">Operational Shortcuts</h2>
-                <div class="grid grid-cols-1 gap-3">
-                    <a href="/admin/shop/textbook/add/" class="flex items-center justify-between p-3 border border-slate-100 bg-slate-50 hover:border-brandGreen transition group">
-                        <span class="text-xs font-bold text-slate-700 uppercase tracking-tight">Add New Textbook</span>
-                        <span class="text-brandGreen font-bold group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
-                    <a href="/admin/resources/resource/add/" class="flex items-center justify-between p-3 border border-slate-100 bg-slate-50 hover:border-brandGreen transition group">
-                        <span class="text-xs font-bold text-slate-700 uppercase tracking-tight">Upload Resource</span>
-                        <span class="text-brandGreen font-bold group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
-                    <a href="/admin/blog/post/add/" class="flex items-center justify-between p-3 border border-slate-100 bg-slate-50 hover:border-brandGreen transition group">
-                        <span class="text-xs font-bold text-slate-700 uppercase tracking-tight">New Blog Article</span>
-                        <span class="text-brandGreen font-bold group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
-                    <a href="/admin/news/newsannouncement/add/" class="flex items-center justify-between p-3 border border-slate-100 bg-slate-50 hover:border-brandGreen transition group">
-                        <span class="text-xs font-bold text-slate-700 uppercase tracking-tight">Post Announcement</span>
-                        <span class="text-brandGreen font-bold group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
+            <section class="bg-white border border-slate-100 p-6 rounded-sm shadow-sm">
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-brandDeepBlue mb-6 italic border-b border-brandSkyBlue pb-2">Academic Enquiries</h3>
+                <!-- Note: In a real app, pass enquiries context here -->
+                <div class="space-y-4">
+                    <p class="text-[10px] text-slate-400 italic">Access and respond to formal inquiries via the master portal.</p>
+                    <a href="/admin/pages/enquiry/" class="block text-center bg-slate-50 text-brandDeepBlue py-3 text-[9px] font-black uppercase tracking-widest border border-slate-100 hover:border-brandSkyBlue transition-all">Open Message Centre</a>
                 </div>
             </section>
 
-            <!-- System Info -->
-            <section class="bg-slate-100 p-6 border-l-4 border-brandBrown rounded-sm">
-                <h3 class="text-[10px] font-bold uppercase tracking-widest text-brandBrown mb-3 italic">System Integrity</h3>
-                <p class="text-xs text-slate-600 leading-relaxed mb-4 italic">
-                    All financial transactions and bulk quotations are monitored for academic compliance and institutional integrity.
-                </p>
-                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
-                    Last Update: {% now "H:i" %} UTC
+            <section class="bg-brandDeepBlue p-8 rounded-sm shadow-2xl text-white relative overflow-hidden group">
+                <div class="relative z-10">
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-brandSkyBlue mb-4 italic">System Integrity</h3>
+                    <p class="text-[11px] text-slate-300 italic leading-relaxed mb-6">Master Control Mode active. All operational data is synchronised with the APLUS master database.</p>
+                    <div class="text-[8px] font-black text-slate-500 uppercase tracking-widest">GMT Session: {% now "H:i" %}</div>
+                </div>
+                <!-- Subtle background design element -->
+                <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
                 </div>
             </section>
         </div>

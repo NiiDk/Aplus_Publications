@@ -16,7 +16,7 @@ class CustomUserChangeForm(UserChangeForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('institution', 'bio', 'phone_number')
+        fields = ('profile_picture', 'institution', 'phone_number', 'bio')
         widgets = {
-            'bio': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Academic background...'}),
+            'bio': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Academic background...', 'class': 'italic'}),
         }

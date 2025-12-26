@@ -12,8 +12,13 @@ print(f"--- APLUS ENGINE STATUS: {'DEBUG' if DEBUG else 'PRODUCTION'} ---")
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-development-default-key')
 
-# Refined ALLOWED_HOSTS for Render
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,aplus-publications.onrender.com').split(',')
+# Robust ALLOWED_HOSTS parsing
+ALLOWED_HOSTS_ENV = os.getenv('ALLOWED_HOSTS', 'aplus-publications.onrender.com,localhost,127.0.0.1')
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_ENV.split(',') if host.strip()]
+
+# Add wildcard for render subdomains for extra resilience
+if '.onrender.com' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('.onrender.com')
 
 INSTALLED_APPS = [
     'django.contrib.admin',

@@ -26,34 +26,26 @@
         body { font-family: 'Inter', sans-serif; }
         .academic-border { border-left: 4px solid #00AEEF; }
         [x-cloak] { display: none !important; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
     {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-gray-50 text-slate-900" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <header class="bg-white border-b sticky top-0 z-50 shadow-sm" x-data="{ open: false }">
-        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <!-- Logo Section -->
+        <nav class="container mx-auto px-4 pt-4 pb-2 flex justify-between items-center">
+            <!-- Large Institutional Logo Section -->
             <a href="{% url 'pages:home' %}" class="flex items-center group">
-                <div class="h-12 md:h-16 w-auto mr-4">
+                <div class="h-16 md:h-20 w-auto mr-6">
                     <img src="{% static 'images/logo.png' %}" alt="Aplus Publications Logo" class="h-full w-auto object-contain" onerror="this.style.display='none'">
                 </div>
                 <div class="flex flex-col leading-none">
-                    <span class="text-brandDeepBlue font-bold text-lg md:text-xl tracking-tighter">APLUS</span>
-                    <span class="text-brandSkyBlue font-bold text-[10px] tracking-[0.2em] uppercase">Publications</span>
+                    <span class="text-brandDeepBlue font-black text-2xl md:text-3xl tracking-tighter">APLUS</span>
+                    <span class="text-brandSkyBlue font-bold text-[12px] tracking-[0.3em] uppercase">Publications</span>
                 </div>
             </a>
             
-            <!-- Desktop Navigation -->
-            <div class="hidden lg:flex space-x-8 text-sm font-semibold uppercase tracking-wider">
-                <a href="{% url 'pages:home' %}" class="hover:text-brandSkyBlue transition">Home</a>
-                <a href="{% url 'shop:textbook_list' %}" class="hover:text-brandSkyBlue transition">Shop</a>
-                <a href="{% url 'resources:resource_list' %}" class="hover:text-brandSkyBlue transition">Resources</a>
-                <a href="{% url 'blog:post_list' %}" class="hover:text-brandSkyBlue transition">Blog</a>
-                <a href="{% url 'pages:about' %}" class="hover:text-brandSkyBlue transition">About</a>
-                <a href="{% url 'pages:contact' %}" class="hover:text-brandSkyBlue transition">Contact Us</a>
-            </div>
-
-            <!-- Action Section (Cart + Auth/Drawer) -->
+            <!-- Desktop Right Actions -->
             <div class="flex items-center space-x-6">
                 <a href="{% url 'orders:cart_detail' %}" class="relative text-slate-600 hover:text-brandSkyBlue transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -79,12 +71,7 @@
                         </div>
                     </button>
                 {% else %}
-                    <div class="hidden md:flex items-center space-x-4">
-                        <a href="{% url 'accounts:login' %}" class="text-sm font-medium hover:text-brandSkyBlue transition">Login</a>
-                        <a href="{% url 'accounts:register' %}" class="bg-brandSkyBlue text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-widest hover:bg-brandDeepBlue transition shadow-sm">Register</a>
-                    </div>
-                    <!-- Mobile Menu Button -->
-                    <button @click="open = true" class="lg:hidden text-slate-600 hover:text-brandSkyBlue transition">
+                    <button @click="open = true" class="text-slate-600 hover:text-brandSkyBlue transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                         </svg>
@@ -93,48 +80,41 @@
             </div>
         </nav>
 
-        <!-- Menu Drawer -->
-        <div x-show="open" 
-             x-cloak
-             class="fixed inset-0 z-[100] overflow-hidden" 
-             aria-labelledby="slide-over-title" 
-             role="dialog" 
-             aria-modal="true">
-            <div class="absolute inset-0 overflow-hidden">
-                <!-- Overlay -->
-                <div x-show="open" 
-                     x-transition:enter="ease-in-out duration-500" 
-                     x-transition:enter-start="opacity-0" 
-                     x-transition:enter-end="opacity-100" 
-                     x-transition:leave="ease-in-out duration-500" 
-                     x-transition:leave-start="opacity-100" 
-                     x-transition:leave-end="opacity-0" 
-                     @click="open = false"
-                     class="absolute inset-0 bg-slate-900 bg-opacity-75 transition-opacity" 
-                     aria-hidden="true"></div>
+        <!-- Horizontal Sub-Navigation Items -->
+        <div class="bg-brandDeepBlue text-white overflow-x-auto whitespace-nowrap scrollbar-hide">
+            <div class="container mx-auto px-4 flex space-x-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] italic">
+                <a href="{% url 'pages:home' %}" class="hover:text-brandSkyBlue transition">Home</a>
+                <a href="{% url 'shop:textbook_list' %}" class="hover:text-brandSkyBlue transition">Catalogue</a>
+                <a href="{% url 'resources:resource_list' %}" class="hover:text-brandSkyBlue transition">Resources</a>
+                <a href="{% url 'blog:post_list' %}" class="hover:text-brandSkyBlue transition">Insights</a>
+                <a href="{% url 'pages:about' %}" class="hover:text-brandSkyBlue transition">Our Mission</a>
+                <a href="{% url 'pages:contact' %}" class="hover:text-brandSkyBlue transition">Contact</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard:index' %}" class="hover:text-brandSkyBlue transition">Dashboard</a>
+                    <a href="{% url 'accounts:logout' %}" class="hover:text-red-400 transition text-slate-300">Logout</a>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="hover:text-brandSkyBlue transition">Login</a>
+                    <a href="{% url 'accounts:register' %}" class="hover:text-brandSkyBlue transition text-brandSkyBlue">Register</a>
+                {% endif %}
+            </div>
+        </div>
 
+        <!-- Menu Drawer -->
+        <div x-show="open" x-cloak class="fixed inset-0 z-[100] overflow-hidden" role="dialog" aria-modal="true">
+            <div class="absolute inset-0 overflow-hidden">
+                <div x-show="open" x-transition:enter="duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="duration-500" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="open = false" class="absolute inset-0 bg-slate-900 bg-opacity-75 transition-opacity"></div>
                 <div class="fixed inset-y-0 right-0 max-w-full flex">
-                    <div x-show="open" 
-                         x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700" 
-                         @click.away="open = false"
-                         x-transition:enter-start="translate-x-full" 
-                         x-transition:enter-end="translate-x-0" 
-                         x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700" 
-                         x-transition:leave-start="translate-x-0" 
-                         x-transition:leave-end="translate-x-full" 
-                         class="relative w-80 max-w-md">
-                        
+                    <div x-show="open" x-transition:enter="transform transition duration-500" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transform transition duration-500" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full" @click.away="open = false" class="relative w-80">
                         <div class="h-full flex flex-col bg-white shadow-2xl overflow-y-scroll">
                             <div class="px-6 py-8 bg-brandDeepBlue text-white flex justify-between items-center">
-                                <h2 class="text-xs font-black uppercase tracking-[0.2em] italic">Menu Control</h2>
+                                <h2 class="text-xs font-black uppercase tracking-[0.2em] italic">Account Control</h2>
                                 <button @click="open = false" class="text-white hover:text-brandSkyBlue transition">
                                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
-
-                            <div class="relative flex-1 px-6 py-10">
+                            <div class="flex-1 px-6 py-10">
                                 {% if user.is_authenticated %}
                                     <div class="mb-10 pb-6 border-b border-slate-100 flex items-center space-x-4">
                                         <div class="w-12 h-12 rounded-full overflow-hidden border border-brandSkyBlue">
@@ -150,24 +130,21 @@
                                         </div>
                                         <div>
                                             <p class="font-bold text-brandDeepBlue text-sm italic">{{ user.get_full_name }}</p>
-                                            <p class="text-[9px] text-slate-400 uppercase tracking-widest">{{ user.role }}</p>
+                                            <p class="text-[9px] text-slate-400 uppercase tracking-widest">{{ user.get_role_display }}</p>
                                         </div>
                                     </div>
                                 {% endif %}
-
                                 <nav class="space-y-6">
-                                    <a href="{% url 'pages:home' %}" class="block text-xs font-black uppercase tracking-widest text-slate-600 hover:text-brandSkyBlue transition italic">Home</a>
-                                    <a href="{% url 'shop:textbook_list' %}" class="block text-xs font-black uppercase tracking-widest text-slate-600 hover:text-brandSkyBlue transition italic">Catalogue</a>
-                                    <a href="{% url 'resources:resource_list' %}" class="block text-xs font-black uppercase tracking-widest text-slate-600 hover:text-brandSkyBlue transition italic">Resources</a>
-                                    
+                                    <a href="{% url 'pages:home' %}" class="block text-xs font-black uppercase tracking-widest text-slate-600 hover:text-brandSkyBlue transition italic">Platform Home</a>
+                                    <a href="{% url 'shop:textbook_list' %}" class="block text-xs font-black uppercase tracking-widest text-slate-600 hover:text-brandSkyBlue transition italic">Browse Catalogue</a>
                                     {% if user.is_authenticated %}
-                                        <a href="{% url 'dashboard:index' %}" class="block text-xs font-black uppercase tracking-widest text-slate-600 hover:text-brandSkyBlue transition italic">Dashboard</a>
-                                        <a href="{% url 'accounts:profile_update' %}" class="block text-xs font-black uppercase tracking-widest text-slate-600 hover:text-brandSkyBlue transition italic">My Profile</a>
+                                        <a href="{% url 'dashboard:index' %}" class="block text-xs font-black uppercase tracking-widest text-slate-600 hover:text-brandSkyBlue transition italic">Dashboard Hub</a>
+                                        <a href="{% url 'accounts:profile_update' %}" class="block text-xs font-black uppercase tracking-widest text-slate-600 hover:text-brandSkyBlue transition italic">Edit Profile</a>
                                         <div class="pt-6 mt-6 border-t border-slate-50">
                                             <a href="{% url 'accounts:logout' %}" class="block text-xs font-black uppercase tracking-widest text-red-500 hover:text-red-700 transition italic">Log Out</a>
                                         </div>
                                     {% else %}
-                                        <a href="{% url 'accounts:login' %}" class="block text-xs font-black uppercase tracking-widest text-slate-600 hover:text-brandSkyBlue transition italic">Log In</a>
+                                        <a href="{% url 'accounts:login' %}" class="block text-xs font-black uppercase tracking-widest text-slate-600 hover:text-brandSkyBlue transition italic">Login Portal</a>
                                         <a href="{% url 'accounts:register' %}" class="block text-xs font-black uppercase tracking-widest text-brandSkyBlue transition italic">Register Account</a>
                                     {% endif %}
                                 </nav>
@@ -191,14 +168,6 @@
 
     <main class="min-h-screen">
         {% block content %}{% endblock %}
-        
-        <section class="bg-brandDeepBlue py-16 mt-20 text-white">
-            <div class="container mx-auto px-4 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 italic uppercase tracking-tighter">Institutional Excellence</h2>
-                <p class="text-brandSkyBlue mb-10 max-w-2xl mx-auto italic font-medium">Providing NaCCA verified curriculum resources across Ghana.</p>
-                <a href="{% url 'pages:contact' %}" class="inline-block bg-brandSkyBlue text-white px-12 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-white hover:text-brandDeepBlue transition shadow-xl">Contact Our Experts</a>
-            </div>
-        </section>
     </main>
 
     <footer class="bg-brandDeepBlue text-white pt-16 pb-8">

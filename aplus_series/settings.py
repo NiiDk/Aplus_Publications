@@ -11,7 +11,9 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 print(f"--- APLUS ENGINE STATUS: {'DEBUG' if DEBUG else 'PRODUCTION'} ---")
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-development-default-key')
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+
+# Refined ALLOWED_HOSTS for Render
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,aplus-publications.onrender.com').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -22,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'corsheaders',
-    'django_htmx', # Added for modern HTMX integration
+    'django_htmx',
     'accounts.apps.AccountsConfig',
     'shop.apps.ShopConfig',
     'orders.apps.OrdersConfig',
@@ -35,7 +37,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # Modern static handling
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -43,7 +45,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_htmx.middleware.HtmxMiddleware', # HTMX Middleware
+    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 ROOT_URLCONF = 'aplus_series.urls'
@@ -100,7 +102,7 @@ LOGOUT_REDIRECT_URL = 'pages:home'
 PAYSTACK_SECRET_KEY = os.getenv('PAYSTACK_SECRET_KEY')
 PAYSTACK_PUBLIC_KEY = os.getenv('PAYSTACK_PUBLIC_KEY')
 CURRENCY_CODE = os.getenv('CURRENCY_CODE', 'GHS')
-SITE_URL = os.getenv('SITE_URL', 'http://127.0.0.1:8000')
+SITE_URL = os.getenv('SITE_URL', 'https://aplus-publications.onrender.com')
 
 # Production Security Hardening
 if not DEBUG:
@@ -110,9 +112,9 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 else:
-    # Development mode relaxations
     SECURE_SSL_REDIRECT = False
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

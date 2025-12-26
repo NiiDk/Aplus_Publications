@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Academic Resources | Aplus Publications{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-12 border-b pb-6">
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900 italic uppercase">GES & Academic Resources</h1>
+        <p class="text-slate-500 text-sm mt-1">Official curricula, academic calendars, and examination timetables.</p>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-12">
+        <!-- Sidebar Filters -->
+        <aside class="w-full md:w-64 space-y-8">
+            <section>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-brandBrown mb-4 italic">Resource Category</h3>
+                <div class="space-y-2">
+                    <a href="?type=" class="block text-sm p-2 rounded {% if not request.GET.type %}bg-brandGreen text-slate-900 font-bold{% else %}text-slate-600 hover:bg-slate-100{% endif %}">All Resources</a>
+                    <a href="?type=CURRICULUM" class="block text-sm p-2 rounded {% if request.GET.type == 'CURRICULUM' %}bg-brandGreen text-slate-900 font-bold{% else %}text-slate-600 hover:bg-slate-100{% endif %}">GES Curricula</a>
+                    <a href="?type=CALENDAR" class="block text-sm p-2 rounded {% if request.GET.type == 'CALENDAR' %}bg-brandGreen text-slate-900 font-bold{% else %}text-slate-600 hover:bg-slate-100{% endif %}">Academic Calendars</a>
+                    <a href="?type=TIMETABLE" class="block text-sm p-2 rounded {% if request.GET.type == 'TIMETABLE' %}bg-brandGreen text-slate-900 font-bold{% else %}text-slate-600 hover:bg-slate-100{% endif %}">Exam Timetables</a>
+                    <a href="?type=CIRCULAR" class="block text-sm p-2 rounded {% if request.GET.type == 'CIRCULAR' %}bg-brandGreen text-slate-900 font-bold{% else %}text-slate-600 hover:bg-slate-100{% endif %}">Official Circulars</a>
+                </div>
+            </section>
+
+            <section class="bg-slate-900 p-6 rounded-sm">
+                <h4 class="text-[10px] font-bold uppercase tracking-widest text-brandGreen mb-3">Institutional Support</h4>
+                <p class="text-xs text-slate-400 italic leading-relaxed">
+                    Can't find a specific GES document? Contact our academic coordination unit for assistance.
+                </p>
+            </section>
+        </aside>
+
+        <!-- Resource Grid -->
+        <div class="flex-1">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for resource in resources %}
+                <div class="bg-white border p-6 rounded-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-slate-100 text-slate-500">
+                                {{ resource.get_resource_type_display }}
+                            </span>
+                            <span class="text-[10px] font-bold text-brandGreen italic">{{ resource.download_count }} Downloads</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 leading-snug mb-2">{{ resource.title }}</h3>
+                        <p class="text-xs text-slate-500 italic line-clamp-2 mb-4">{{ resource.description }}</p>
+                    </div>
+                    
+                    <a href="{% url 'resources:resource_download' resource.slug %}" target="_blank" class="block text-center bg-slate-900 text-white py-3 text-xs font-bold uppercase tracking-widest hover:bg-brandBrown transition">
+                        Download PDF
+                    </a>
+                </div>
+                {% empty %}
+                <div class="col-span-full py-20 text-center text-slate-400 italic">
+                    No academic resources currently listed in this category.
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination logic here if needed -->
+        </div>
+    </div>
+</div>
+{% endblock %}

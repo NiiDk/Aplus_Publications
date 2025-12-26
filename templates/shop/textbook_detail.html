@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} | APLUS PUBLICATIONS{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12 max-w-5xl">
+    <div class="mb-10">
+        <a href="{% url 'shop:textbook_list' %}" class="text-[10px] font-bold text-brandBrown hover:text-brandGreen uppercase tracking-[0.2em] italic flex items-center transition">
+            <span class="mr-2">←</span> Return to Catalogue
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20">
+        <!-- Cute Compact Image Container -->
+        <div class="md:col-span-5 lg:col-span-4">
+            <div class="bg-white border border-slate-100 p-3 shadow-sm rounded-sm sticky top-28">
+                <div class="aspect-[4/5] bg-slate-50 overflow-hidden relative border border-slate-50">
+                    {% if book.cover_image %}
+                        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <div class="w-full h-full flex items-center justify-center text-slate-200 italic text-[10px]">No Preview</div>
+                    {% endif %}
+                    <div class="absolute top-3 left-3 bg-brandGreen text-slate-900 px-2 py-0.5 text-[8px] font-black uppercase tracking-tighter shadow-sm rounded-full">
+                        {{ book.curriculum }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sleek Information Panel -->
+        <div class="md:col-span-7 lg:col-span-8 space-y-10">
+            <div>
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-brandGreen bg-slate-50 px-2 py-1">{{ book.subject.name }}</span>
+                    <span class="text-slate-200 text-xs">•</span>
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{{ book.academic_level.name }}</span>
+                </div>
+                <h1 class="text-3xl font-bold text-slate-900 tracking-tight italic leading-tight mb-4">{{ book.title }}</h1>
+                <p class="text-xl font-black text-brandBrown italic tracking-tighter">GHS {{ book.price }}</p>
+            </div>
+
+            <div class="academic-border pl-6 py-1">
+                <p class="text-slate-600 text-sm leading-relaxed italic">
+                    {{ book.description }}
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-8 py-8 border-y border-slate-50">
+                <div>
+                    <p class="text-[9px] font-bold uppercase text-slate-400 tracking-widest mb-2">ISBN Reference</p>
+                    <p class="text-xs font-mono text-slate-700">{{ book.isbn|default:"NOT ASSIGNED" }}</p>
+                </div>
+                <div>
+                    <p class="text-[9px] font-bold uppercase text-slate-400 tracking-widest mb-2">Publication Class</p>
+                    <p class="text-xs text-slate-700 italic font-bold">{{ book.get_book_type_display|upper }}</p>
+                </div>
+            </div>
+
+            <!-- Full-Width Modern Action -->
+            <div class="pt-4">
+                <form hx-post="{% url 'orders:cart_add' book.id %}" 
+                      hx-swap="outerHTML" 
+                      hx-target="this">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="w-full bg-slate-900 text-white py-4 rounded-sm text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brandGreen hover:text-slate-900 transition-all shadow-xl flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cute Compact Recommendations -->
+    {% if recommendations %}
+    <section class="mt-32">
+        <h2 class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 mb-12 text-center">Suggested Academic Progressions</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-6">
+            {% for rec in recommendations %}
+            <a href="{{ rec.get_absolute_url }}" class="group block">
+                <div class="aspect-[4/5] bg-white border border-slate-100 p-2 mb-4 group-hover:border-brandGreen transition-colors shadow-sm rounded-sm">
+                    {% if rec.cover_image %}
+                        <img src="{{ rec.cover_image.url }}" alt="{{ rec.title }}" class="w-full h-full object-cover rounded-sm">
+                    {% endif %}
+                </div>
+                <p class="text-[8px] font-bold text-brandGreen uppercase tracking-tighter mb-1">{{ rec.subject.name|truncatechars:15 }}</p>
+                <h4 class="text-[10px] font-bold text-slate-800 leading-tight group-hover:text-brandBrown transition italic line-clamp-2">{{ rec.title }}</h4>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

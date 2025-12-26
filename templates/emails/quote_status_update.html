@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: 'Inter', sans-serif; color: #1e293b; }
+        .container { max-width: 600px; margin: 0 auto; padding: 40px; border: 1px solid #e2e8f0; }
+        .header { border-bottom: 4px solid #C3D600; padding-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Institutional Quote Update</h2>
+        <p>Your request for an institutional quotation (Ref: #{{ quote.request_id|stringformat:".8s" }}) has been updated.</p>
+        <p><strong>Current Status:</strong> {{ quote.get_status_display }}</p>
+        <p>Our sales coordination team will be in touch shortly with the next steps.</p>
+    </div>
+</body>
+</html>

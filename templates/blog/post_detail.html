@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} | Aplus Publications{% endblock %}
+
+{% block content %}
+<article class="container mx-auto px-4 py-12 max-w-4xl">
+    <div class="mb-10 text-center">
+        <div class="flex justify-center items-center space-x-3 mb-6">
+            <span class="text-xs font-bold uppercase tracking-widest text-brandGreen">{{ post.category.name }}</span>
+            <span class="text-slate-300">•</span>
+            <span class="text-xs text-slate-400 uppercase tracking-widest">{{ post.publish|date:"F d, Y" }}</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tighter italic leading-tight mb-8">
+            {{ post.title }}
+        </h1>
+        <p class="text-slate-500 italic text-sm">By {{ post.author.get_full_name|default:post.author.username }}</p>
+    </div>
+
+    {% if post.featured_image %}
+    <div class="mb-12 rounded-sm overflow-hidden shadow-xl">
+        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-auto">
+    </div>
+    {% endif %}
+
+    <div class="prose prose-slate lg:prose-lg mx-auto academic-border pl-8 py-4 mb-16">
+        <div class="text-slate-700 leading-relaxed space-y-6">
+            {{ post.body|linebreaks }}
+        </div>
+    </div>
+
+    <div class="border-t pt-10 flex justify-between items-center">
+        <a href="{% url 'blog:post_list' %}" class="text-xs font-bold text-brandBrown hover:text-brandGreen uppercase tracking-widest italic flex items-center transition">
+            <span class="mr-2">←</span> Back to Insights
+        </a>
+        <div class="flex space-x-4">
+            <span class="text-[10px] font-bold uppercase text-slate-400">Share:</span>
+            <!-- Simple share placeholders -->
+            <button class="text-slate-400 hover:text-brandGreen text-xs font-bold uppercase">Twitter</button>
+            <button class="text-slate-400 hover:text-brandGreen text-xs font-bold uppercase">LinkedIn</button>
+        </div>
+    </div>
+</article>
+{% endblock %}

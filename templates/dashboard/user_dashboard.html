@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Academic Dashboard | Aplus Publications{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-10 border-b pb-6">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 italic">ACADEMIC HUB</h1>
+            <p class="text-slate-500 text-sm uppercase tracking-widest mt-1">Role: <span class="text-brandBrown font-bold">{{ user_role }}</span></p>
+        </div>
+        <div class="mt-4 md:mt-0 flex space-x-3">
+            <a href="{% url 'shop:textbook_list' %}" class="bg-brandGreen text-slate-900 px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-brandBrown hover:text-white transition">Acquire Textbooks</a>
+            <a href="{% url 'resources:resource_list' %}" class="border border-slate-300 text-slate-600 px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-slate-100 transition">Access Resources</a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Recent Orders -->
+        <div class="lg:col-span-2 space-y-8">
+            <section class="bg-white border p-6 rounded-sm shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-sm font-bold uppercase tracking-widest text-brandBrown italic">Recent Academic Purchases</h2>
+                    <a href="{% url 'orders:order_history' %}" class="text-xs text-brandGreen font-bold hover:underline">View All</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="text-slate-400 border-b">
+                                <th class="pb-3 font-medium">Order ID</th>
+                                <th class="pb-3 font-medium">Date</th>
+                                <th class="pb-3 font-medium">Status</th>
+                                <th class="pb-3 font-medium text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y">
+                            {% for order in recent_orders %}
+                            <tr>
+                                <td class="py-4 font-mono text-xs">{{ order.order_id|stringformat:".8s" }}...</td>
+                                <td class="py-4 text-slate-600">{{ order.created_at|date:"M d, Y" }}</td>
+                                <td class="py-4">
+                                    <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-tighter rounded-full 
+                                        {% if order.status == 'PAID' %}bg-green-100 text-green-700
+                                        {% elif order.status == 'PENDING' %}bg-yellow-100 text-yellow-700
+                                        {% else %}bg-slate-100 text-slate-700{% endif %}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                </td>
+                                <td class="py-4 text-right font-bold">GHS {{ order.total_amount }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="py-8 text-center text-slate-400 italic">No recent purchases recorded.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Recent Quotes -->
+            <section class="bg-white border p-6 rounded-sm shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-sm font-bold uppercase tracking-widest text-brandBrown italic">Institutional Quote Requests</h2>
+                </div>
+                <div class="space-y-4">
+                    {% for quote in recent_quotes %}
+                    <div class="flex justify-between items-center border-b pb-4 last:border-0 last:pb-0">
+                        <div>
+                            <p class="font-bold text-slate-800">{{ quote.school_name }}</p>
+                            <p class="text-xs text-slate-500">{{ quote.created_at|date:"M d, Y" }} • Qty: {{ quote.estimated_quantity }}</p>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase text-brandGreen">{{ quote.get_status_display }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-center text-slate-400 py-4 italic text-sm">No bulk requests found.</p>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+
+        <!-- Sidebar Activity -->
+        <div class="space-y-8">
+            <section class="bg-slate-900 text-white p-6 rounded-sm shadow-sm">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brandGreen mb-6 italic">Recent Resource Downloads</h2>
+                <div class="space-y-6">
+                    {% for download in recent_downloads %}
+                    <div class="border-l-2 border-brandGreen pl-4">
+                        <p class="text-sm font-bold text-slate-200 leading-tight">{{ download.resource.title }}</p>
+                        <p class="text-[10px] text-slate-500 mt-1 uppercase tracking-tighter">{{ download.downloaded_at|timesince }} ago</p>
+                    </div>
+                    {% empty %}
+                    <p class="text-slate-500 text-xs italic">No recent downloads.</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Academic Support -->
+            <section class="bg-brandBrown text-white p-6 rounded-sm shadow-sm">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brandGreen mb-4 italic">Academic Support</h2>
+                <p class="text-xs text-slate-200 mb-6 leading-relaxed italic">
+                    For inquiries regarding bulk institutional orders or digital resource access, please contact our academic coordination office.
+                </p>
+                <a href="{% url 'pages:contact' %}" class="block text-center border border-white/30 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 transition">Institutional Support</a>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Order History | Aplus Publications{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-10 border-b pb-6 flex justify-between items-end">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 italic uppercase">Order History</h1>
+            <p class="text-slate-500 text-sm mt-1">A comprehensive record of your academic acquisitions.</p>
+        </div>
+        <a href="{% url 'dashboard:index' %}" class="text-xs font-bold text-brandBrown hover:text-brandGreen uppercase tracking-widest italic flex items-center">
+            <span class="mr-2">←</span> Back to Hub
+        </a>
+    </div>
+
+    <div class="bg-white border rounded-sm shadow-sm overflow-hidden">
+        <table class="w-full text-left text-sm">
+            <thead class="bg-slate-50 border-b text-slate-400 uppercase text-[10px] font-bold tracking-widest">
+                <tr>
+                    <th class="px-6 py-4">Reference</th>
+                    <th class="px-6 py-4">Date</th>
+                    <th class="px-6 py-4">Status</th>
+                    <th class="px-6 py-4">Payment</th>
+                    <th class="px-6 py-4 text-right">Total</th>
+                    <th class="px-6 py-4"></th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for order in orders %}
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="px-6 py-6 font-mono text-xs text-slate-500 uppercase tracking-tighter">
+                        #{{ order.order_id|stringformat:".12s" }}
+                    </td>
+                    <td class="px-6 py-6 text-slate-600">
+                        {{ order.created_at|date:"M d, Y" }}
+                    </td>
+                    <td class="px-6 py-6">
+                        <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-tighter rounded-full 
+                            {% if order.status == 'PAID' %}bg-green-100 text-green-700
+                            {% elif order.status == 'PENDING' %}bg-yellow-100 text-yellow-700
+                            {% elif order.status == 'CANCELLED' %}bg-red-100 text-red-700
+                            {% else %}bg-slate-100 text-slate-700{% endif %}">
+                            {{ order.get_status_display }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-6 text-xs text-slate-500 italic">
+                        {{ order.get_payment_method_display }}
+                    </td>
+                    <td class="px-6 py-6 text-right font-bold text-slate-900 italic">
+                        GHS {{ order.total_amount }}
+                    </td>
+                    <td class="px-6 py-6 text-right">
+                        <a href="{% url 'orders:order_detail' order.order_id %}" class="text-brandGreen font-bold text-[10px] uppercase tracking-widest hover:text-brandBrown transition">
+                            View Details
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="px-6 py-16 text-center text-slate-400 italic">
+                        No academic orders have been placed under this account yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

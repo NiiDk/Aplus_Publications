@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Successful | APLUS PUBLICATIONS{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-20 text-center">
+    <div class="max-w-2xl mx-auto">
+        <div class="w-20 h-20 bg-brandGreen text-slate-900 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+            </svg>
+        </div>
+        
+        <h1 class="text-4xl font-bold text-slate-900 mb-4 italic uppercase tracking-tighter">Payment Successful</h1>
+        <p class="text-slate-500 text-lg mb-12 italic leading-relaxed">
+            Your payment has been verified and your order is now being processed. An official confirmation has been sent to your academic email.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="{% url 'shop:textbook_list' %}" class="bg-slate-900 text-white px-8 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-brandBrown transition shadow-xl">
+                Continue to Shop
+            </a>
+            <a href="{% url 'pages:home' %}" class="bg-brandGreen text-slate-900 px-8 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-brandBrown hover:text-white transition shadow-xl">
+                Return Home
+            </a>
+        </div>
+
+        <div class="mt-12 pt-8 border-t">
+            <a href="{% url 'dashboard:index' %}" class="text-xs font-bold text-brandBrown hover:text-brandGreen uppercase tracking-widest italic transition">
+                View Academic Dashboard →
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page.title }} | APLUS PUBLICATIONS{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-16 max-w-4xl">
+    <div class="mb-12 border-b pb-6">
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 italic uppercase tracking-tighter">{{ page.title }}</h1>
+        <p class="text-slate-400 text-[10px] uppercase tracking-widest mt-2 italic">Last Updated: {{ page.last_updated|date:"F d, Y" }}</p>
+    </div>
+
+    <div class="prose prose-slate lg:prose-lg max-w-none academic-border pl-8 py-4">
+        <div class="text-slate-700 leading-relaxed space-y-6 italic">
+            {{ page.content|safe }}
+        </div>
+    </div>
+
+    <div class="mt-16 pt-8 border-t flex justify-between items-center">
+        <a href="{% url 'pages:home' %}" class="text-xs font-bold text-brandBrown hover:text-brandGreen uppercase tracking-widest italic flex items-center transition">
+            <span class="mr-2">←</span> Return Home
+        </a>
+        <p class="text-[10px] text-slate-400 italic font-bold uppercase">APLUS PUBLICATIONS • Strictly Academic</p>
+    </div>
+</div>
+{% endblock %}

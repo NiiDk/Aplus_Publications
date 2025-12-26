@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Details #{{ order.order_id|stringformat:".8s" }} | Aplus Publications{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+    <div class="mb-10 border-b pb-6 flex justify-between items-end">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 italic uppercase">Order Confirmation</h1>
+            <p class="text-slate-500 text-sm mt-1 uppercase tracking-widest font-bold">Reference: <span class="text-slate-900">#{{ order.order_id }}</span></p>
+        </div>
+        <div class="flex space-x-4">
+            <a href="{% url 'orders:order_history' %}" class="text-xs font-bold text-brandBrown hover:text-brandGreen uppercase tracking-widest italic transition flex items-center">
+                <span class="mr-2">←</span> History
+            </a>
+            <a href="{% url 'orders:order_invoice' order.order_id %}" target="_blank" class="bg-slate-900 text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-brandBrown transition">Print Invoice</a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div class="bg-white border p-6 rounded-sm shadow-sm academic-border">
+            <h3 class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 italic">Order Status</h3>
+            <span class="px-3 py-1 text-xs font-bold uppercase tracking-tighter rounded-full 
+                {% if order.status == 'PAID' %}bg-green-100 text-green-700
+                {% elif order.status == 'PENDING' %}bg-yellow-100 text-yellow-700
+                {% else %}bg-slate-100 text-slate-700{% endif %}">
+                {{ order.get_status_display }}
+            </span>
+            <p class="text-[10px] text-slate-400 mt-4 italic">Placed on {{ order.created_at|date:"F d, Y" }}</p>
+        </div>
+
+        <div class="bg-white border p-6 rounded-sm shadow-sm">
+            <h3 class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 italic">Payment Method</h3>
+            <p class="text-sm font-bold text-slate-800">{{ order.get_payment_method_display }}</p>
+            <p class="text-[10px] text-slate-400 mt-2 italic">Total GHS {{ order.total_amount }}</p>
+        </div>
+
+        <div class="bg-white border p-6 rounded-sm shadow-sm">
+            <h3 class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 italic">Delivery Mode</h3>
+            <p class="text-sm font-bold text-slate-800">{{ order.get_delivery_method_display }}</p>
+            {% if order.delivery_method == 'DELIVERY' %}
+                <p class="text-[10px] text-slate-500 mt-2 italic leading-relaxed">{{ order.address }}, {{ order.city }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <section class="bg-white border rounded-sm shadow-sm overflow-hidden mb-12">
+        <div class="bg-slate-50 px-6 py-4 border-b">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-slate-900 italic">Academic Items Summary</h2>
+        </div>
+        <table class="w-full text-left text-sm">
+            <thead>
+                <tr class="text-slate-400 border-b uppercase text-[10px] font-bold tracking-widest">
+                    <th class="px-6 py-4">Publication</th>
+                    <th class="px-6 py-4 text-center">Qty</th>
+                    <th class="px-6 py-4 text-right">Price</th>
+                    <th class="px-6 py-4 text-right">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for item in order.items.all %}
+                <tr>
+                    <td class="px-6 py-6 font-bold text-slate-800">{{ item.product.title }}</td>
+                    <td class="px-6 py-6 text-center text-slate-600">{{ item.quantity }}</td>
+                    <td class="px-6 py-6 text-right text-slate-600 italic">GHS {{ item.price }}</td>
+                    <td class="px-6 py-6 text-right font-bold text-slate-900 italic">GHS {{ item.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot class="bg-slate-50 border-t">
+                <tr>
+                    <td colspan="3" class="px-6 py-4 text-right font-bold uppercase text-[10px] tracking-widest text-slate-400 italic">Grand Total Acquisition</td>
+                    <td class="px-6 py-4 text-right text-xl font-bold text-brandBrown italic">GHS {{ order.total_amount }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </section>
+
+    {% if order.status == 'PENDING' %}
+    <div class="bg-brandGreen p-8 rounded-sm shadow-lg text-center">
+        <h3 class="text-xl font-bold text-slate-900 mb-4 italic uppercase tracking-tighter">Awaiting Payment Settlement</h3>
+        <p class="text-slate-800 mb-8 italic text-sm">To proceed with your order, please complete the payment via Paystack.</p>
+        <a href="{% url 'orders:initiate_payment' order.order_id %}" class="inline-block bg-slate-900 text-white px-12 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-brandBrown transition shadow-xl">
+            Settle Payment (Paystack)
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Terms & Conditions | APLUS PUBLICATIONS{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-16 max-w-4xl">
+    <div class="mb-12 border-b pb-6">
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 italic uppercase tracking-tighter">Terms & Conditions</h1>
+        <p class="text-slate-400 text-[10px] uppercase tracking-widest mt-2 italic">Institutional Academic Agreement</p>
+    </div>
+
+    <div class="bg-white border p-10 rounded-sm shadow-sm academic-border">
+        <div class="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-8 italic">
+            <section>
+                <h2 class="text-brandBrown font-bold text-lg uppercase tracking-wider mb-4">1. Academic Integrity</h2>
+                <p>By accessing the APLUS PUBLICATIONS platform, users agree to uphold the highest standards of academic integrity. All materials provided are for educational purposes and must be used in accordance with Ghana Education Service (GES) guidelines.</p>
+            </section>
+
+            <section>
+                <h2 class="text-brandBrown font-bold text-lg uppercase tracking-wider mb-4">2. Intellectual Property</h2>
+                <p>All curriculum-aligned content, textbooks, and digital resources are the exclusive intellectual property of APLUS PUBLICATIONS. Unauthorized reproduction or redistribution is strictly prohibited and subject to legal action under Ghanaian copyright law.</p>
+            </section>
+
+            <section>
+                <h2 class="text-brandBrown font-bold text-lg uppercase tracking-wider mb-4">3. Bulk Institutional Orders</h2>
+                <p>Quotations provided for schools and educational institutions are valid for a period of 30 days. Delivery timelines are subject to institutional requirements and logistics coordination.</p>
+            </section>
+
+            <section>
+                <h2 class="text-brandBrown font-bold text-lg uppercase tracking-wider mb-4">4. Digital Resource Usage</h2>
+                <p>Access to digital resources is granted on a per-user basis. Schools utilizing institutional access must ensure that credentials are not shared outside the authorized academic body.</p>
+            </section>
+        </div>
+    </div>
+
+    <div class="mt-16 pt-8 border-t flex justify-between items-center">
+        <a href="{% url 'pages:home' %}" class="text-xs font-bold text-brandBrown hover:text-brandGreen uppercase tracking-widest italic flex items-center transition">
+            <span class="mr-2">←</span> Return Home
+        </a>
+        <p class="text-[10px] text-slate-400 italic font-bold uppercase">Last Updated: January 2024</p>
+    </div>
+</div>
+{% endblock %}

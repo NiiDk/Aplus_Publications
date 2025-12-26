@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout | Aplus Publications{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-10 border-b pb-6">
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900 italic uppercase">Checkout</h1>
+        <p class="text-slate-500 text-sm mt-1">Finalize your academic acquisition details.</p>
+    </div>
+
+    <form method="post" class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        {% csrf_token %}
+        <div class="lg:col-span-2 space-y-8">
+            <section class="bg-white border p-8 rounded-sm shadow-sm">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brandBrown mb-6 italic">Recipient Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest">Full Academic Name</label>
+                        {{ form.full_name }}
+                        {% if form.full_name.errors %}<p class="text-red-500 text-xs mt-1">{{ form.full_name.errors.0 }}</p>{% endif %}
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest">Email Address</label>
+                        {{ form.email }}
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest">Phone Number</label>
+                        {{ form.phone_number }}
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white border p-8 rounded-sm shadow-sm">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brandBrown mb-6 italic">Delivery & Shipping</h2>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest">Delivery Method</label>
+                        {{ form.delivery_method }}
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest">School or Residential Address</label>
+                            {{ form.address }}
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest">City/Town</label>
+                            {{ form.city }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white border p-8 rounded-sm shadow-sm">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brandBrown mb-6 italic">Payment Method</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {{ form.payment_method }}
+                </div>
+            </section>
+        </div>
+
+        <div class="space-y-6">
+            <div class="bg-slate-900 text-white p-8 rounded-sm shadow-sm sticky top-24">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brandGreen mb-6 italic">Review Order</h2>
+                <div class="space-y-4 text-xs mb-8">
+                    {% for item in cart.items.all %}
+                    <div class="flex justify-between items-start border-b border-slate-800 pb-4">
+                        <div class="pr-4">
+                            <p class="font-bold text-slate-200 leading-tight">{{ item.product.title }}</p>
+                            <p class="text-slate-500 mt-1 uppercase tracking-tighter">Qty: {{ item.quantity }}</p>
+                        </div>
+                        <span class="text-slate-400 italic">GHS {{ item.product.price }}</span>
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="flex justify-between pt-4 text-sm font-bold">
+                        <span>Total Payable</span>
+                        <span class="text-brandGreen italic">GHS {{ cart_total }}</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full bg-brandGreen text-slate-900 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-brandBrown hover:text-white transition shadow-lg">
+                    Confirm Order
+                </button>
+                
+                <p class="text-[10px] text-slate-500 text-center mt-6 italic leading-relaxed">
+                    By confirming, you agree to the Aplus Publications terms of academic service and delivery policies.
+                </p>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+        width: 100%;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.125rem;
+        padding: 0.75rem;
+        font-size: 0.875rem;
+        transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: #C3D600;
+        box-shadow: 0 0 0 1px #C3D600;
+    }
+</style>
+{% endblock %}

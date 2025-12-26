@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Cart | APLUS PUBLICATIONS{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-10 border-b pb-6 flex justify-between items-end">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 italic uppercase tracking-tighter">Your Cart</h1>
+            <p class="text-slate-500 text-xs mt-1 italic uppercase tracking-widest font-bold">Review Your Institutional Selection</p>
+        </div>
+        <div class="hidden md:flex items-center text-brandGreen font-bold text-[10px] uppercase tracking-widest italic">
+            Secure Transaction
+        </div>
+    </div>
+
+    {% if cart.items.all %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12" id="cart-container">
+        <div class="lg:col-span-2">
+            <div class="bg-white border border-slate-100 rounded-sm overflow-hidden shadow-sm">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-50 border-b text-slate-400 uppercase text-[9px] font-black tracking-[0.2em]">
+                        <tr>
+                            <th class="px-6 py-4">Publication</th>
+                            <th class="px-6 py-4 text-center">Quantity</th>
+                            <th class="px-6 py-4 text-right">Subtotal</th>
+                            <th class="px-6 py-4"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50" id="cart-items-body">
+                        {% for item in cart.items.all %}
+                        <tr id="cart-row-{{ item.id }}" class="hover:bg-slate-50 transition-colors duration-200">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-16 bg-slate-100 flex-shrink-0 mr-4 rounded-sm overflow-hidden border border-slate-200 shadow-sm">
+                                        {% if item.product.cover_image %}
+                                            <img src="{{ item.product.cover_image.url }}" alt="{{ item.product.title }}" class="w-full h-full object-cover">
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-slate-800 text-xs italic leading-tight">{{ item.product.title }}</p>
+                                        <div class="flex items-center mt-1 space-x-2">
+                                            <span class="text-[8px] font-bold text-brandGreen uppercase tracking-tighter">{{ item.product.subject.name }}</span>
+                                            <span class="text-slate-200 text-[8px]">•</span>
+                                            <span class="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">{{ item.product.academic_level.name }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <form hx-post="{% url 'orders:cart_update' item.id %}" 
+                                      hx-trigger="change from:input[name='quantity'], keyup delay:500ms from:input[name='quantity']"
+                                      hx-swap="none"
+                                      class="flex items-center justify-center">
+                                    {% csrf_token %}
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" 
+                                           class="w-10 border border-slate-200 rounded-sm px-1 py-1 text-center text-xs font-bold text-slate-700 focus:outline-none focus:border-brandGreen focus:ring-1 focus:ring-brandGreen transition">
+                                </form>
+                            </td>
+                            <td id="item-total-{{ item.id }}" class="px-6 py-4 text-right font-black text-slate-900 italic text-xs tracking-tighter">
+                                GHS {{ item.product.price|default:"0.00" }}
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <button hx-post="{% url 'orders:cart_remove' item.id %}"
+                                        hx-target="#cart-row-{{ item.id }}"
+                                        hx-swap="outerHTML"
+                                        class="text-slate-300 hover:text-red-600 transition-colors p-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-6 flex justify-between items-center">
+                <a href="{% url 'shop:textbook_list' %}" class="text-[10px] font-bold text-brandBrown hover:text-brandGreen uppercase tracking-[0.2em] flex items-center italic transition">
+                    <span class="mr-2">←</span> Continue Selection
+                </a>
+                <p class="text-[9px] text-slate-400 italic">Prices inclusive of NaCCA verified academic standards.</p>
+            </div>
+        </div>
+
+        <div class="space-y-6" id="cart-summary-container">
+            {% include 'orders/partials/cart_summary.html' %}
+
+            <div class="bg-white border border-slate-100 p-6 rounded-sm shadow-sm">
+                <h3 class="text-[10px] font-black uppercase tracking-widest text-brandBrown mb-4 italic">Institutional Bulk</h3>
+                <p class="text-[11px] text-slate-500 leading-relaxed mb-4 italic">
+                    Acquiring for a school or organisation? Request a specialised quotation for bulk discounts.
+                </p>
+                <a href="#" class="text-[10px] font-bold text-brandGreen hover:underline uppercase tracking-widest">Formal Quote Request →</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white border border-slate-100 py-24 px-4 text-center rounded-sm shadow-sm">
+        <div class="max-w-md mx-auto">
+            <div class="w-16 h-16 bg-slate-50 text-slate-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+            </div>
+            <h2 class="text-lg font-bold text-slate-900 mb-2 italic uppercase tracking-tight">Your cart is empty.</h2>
+            <p class="text-slate-400 text-xs mb-8 italic">Please browse our academic catalogue to begin your acquisition.</p>
+            <a href="{% url 'shop:textbook_list' %}" class="inline-block bg-slate-900 text-white px-8 py-3 rounded-sm text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brandGreen hover:text-slate-900 transition-all shadow-lg">Explore Catalogue</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    document.body.addEventListener('cartUpdated', function(evt) {
+        window.location.reload();
+    });
+</script>
+{% endblock %}

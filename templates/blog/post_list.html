@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Academic Blog | Aplus Publications{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-12 border-b pb-6">
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900 italic uppercase tracking-tighter">Academic Insights</h1>
+        <p class="text-slate-500 text-sm mt-1">Teaching strategies, curriculum updates, and educational thought leadership.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+        <div class="lg:col-span-3 space-y-16">
+            {% for post in posts %}
+            <article class="flex flex-col md:flex-row gap-8 group">
+                {% if post.featured_image %}
+                <div class="w-full md:w-64 h-48 bg-slate-100 flex-shrink-0 overflow-hidden rounded-sm">
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                {% endif %}
+                <div class="flex-1">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-brandGreen">
+                            {{ post.category.name }}
+                        </span>
+                        <span class="text-slate-300">•</span>
+                        <span class="text-[10px] text-slate-400 uppercase tracking-widest">
+                            {{ post.publish|date:"M d, Y" }}
+                        </span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900 mb-4 group-hover:text-brandBrown transition italic leading-tight">
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </h2>
+                    <p class="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6">
+                        {{ post.body|striptags|truncatewords:40 }}
+                    </p>
+                    <a href="{{ post.get_absolute_url }}" class="text-xs font-bold text-slate-900 uppercase tracking-widest border-b-2 border-brandGreen pb-1 hover:border-brandBrown transition">
+                        Read Full Article
+                    </a>
+                </div>
+            </article>
+            {% empty %}
+            <p class="text-slate-400 italic">No academic insights published yet.</p>
+            {% endfor %}
+            
+            <!-- Pagination logic here -->
+        </div>
+
+        <aside class="space-y-12">
+            <section>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-brandBrown mb-6 italic border-b pb-2">Categories</h3>
+                <div class="space-y-3">
+                    {% for cat in categories %}
+                    <a href="{% url 'blog:post_by_category' cat.slug %}" class="flex justify-between items-center text-sm text-slate-600 hover:text-brandGreen transition">
+                        <span>{{ cat.name }}</span>
+                        <span class="text-[10px] bg-slate-100 px-2 py-1 rounded-full">{{ cat.posts.count }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="bg-slate-50 p-6 border-l-4 border-brandGreen">
+                <h4 class="text-xs font-bold uppercase tracking-widest text-slate-900 mb-4 italic">Newsletter</h4>
+                <p class="text-xs text-slate-500 mb-6 italic">Subscribe for the latest academic publications and curriculum updates.</p>
+                <form class="space-y-3">
+                    <input type="email" placeholder="Email Address" class="w-full text-xs p-3 border rounded-sm focus:ring-1 focus:ring-brandGreen outline-none">
+                    <button class="w-full bg-slate-900 text-white py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-brandBrown transition">Subscribe</button>
+                </form>
+            </section>
+        </aside>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Academic Login | Aplus Publications{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-20">
+    <div class="max-w-md mx-auto">
+        <div class="bg-white border p-10 rounded-sm shadow-sm">
+            <div class="text-center mb-10">
+                <h1 class="text-2xl font-bold tracking-tight text-slate-900 italic uppercase">Academic Login</h1>
+                <p class="text-slate-500 text-xs mt-2 uppercase tracking-widest italic">Institutional Access Portal</p>
+            </div>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="bg-red-50 text-red-600 p-3 text-xs rounded-sm mb-6 italic">
+                        {{ form.non_field_errors.0 }}
+                    </div>
+                {% endif %}
+
+                <div>
+                    <label for="{{ form.username.id_for_label }}" class="block text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest">Email Address / Username</label>
+                    <input type="text" name="username" id="{{ form.username.id_for_label }}" 
+                           class="w-full border border-slate-200 rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-brandGreen focus:ring-1 focus:ring-brandGreen transition"
+                           placeholder="Enter your academic credentials" required>
+                </div>
+
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <label for="{{ form.password.id_for_label }}" class="block text-[10px] font-bold uppercase text-slate-400 tracking-widest">Password</label>
+                        <a href="#" class="text-[10px] text-brandBrown font-bold hover:text-brandGreen uppercase">Forgot?</a>
+                    </div>
+                    <input type="password" name="password" id="{{ form.password.id_for_label }}" 
+                           class="w-full border border-slate-200 rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-brandGreen focus:ring-1 focus:ring-brandGreen transition"
+                           placeholder="••••••••" required>
+                </div>
+
+                <div class="flex items-center">
+                    <input type="checkbox" name="remember" id="remember" class="w-4 h-4 text-brandGreen border-slate-300 rounded focus:ring-brandGreen">
+                    <label for="remember" class="ml-2 text-xs text-slate-500 italic">Keep me logged in for this session</label>
+                </div>
+
+                <button type="submit" class="w-full bg-brandGreen text-slate-900 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-brandBrown hover:text-white transition shadow-sm">
+                    Initiate Session
+                </button>
+            </form>
+
+            <div class="mt-10 pt-8 border-t text-center">
+                <p class="text-xs text-slate-500 italic mb-4">New to Aplus Publications?</p>
+                <a href="{% url 'accounts:register' %}" class="text-xs font-bold text-brandBrown hover:text-brandGreen uppercase tracking-widest">Create Academic Account</a>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <p class="text-[10px] text-slate-400 italic">
+                Plot 48, Block F, Ahinsan, Kumasi • 020 940 5151
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

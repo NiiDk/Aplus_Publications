@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Academic Catalogue | APLUS PUBLICATIONS{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-10 border-b pb-6 flex justify-between items-end">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 italic uppercase tracking-tighter">Academic Catalogue</h1>
+            <p class="text-slate-500 text-sm mt-1 italic">Search through our curriculum-aligned publications and past questions.</p>
+        </div>
+        <div class="htmx-indicator flex items-center text-brandGreen font-bold text-xs uppercase tracking-widest">
+            <svg class="animate-spin h-4 w-4 mr-2" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Refining...
+        </div>
+    </div>
+
+    <div class="md:flex md:gap-12">
+        <aside class="w-full md:w-72 mb-8">
+            <form hx-get="{% url 'shop:textbook_list' %}" 
+                  hx-target="#textbook-results" 
+                  hx-trigger="change, keyup delay:500ms from:input[name='q']"
+                  hx-indicator=".htmx-indicator"
+                  hx-push-url="true"
+                  class="space-y-8 sticky top-28">
+                
+                <div>
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest text-brandBrown mb-3">Quick Search</h3>
+                    <div class="relative">
+                        <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Title or ISBN..." 
+                               class="w-full border border-slate-200 rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-brandGreen focus:ring-1 focus:ring-brandGreen transition italic">
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest text-brandBrown mb-3">Publication Category</h3>
+                    <select name="type" class="w-full border border-slate-200 rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-brandGreen transition bg-white italic">
+                        <option value="">All Publications</option>
+                        {% for value, label in book_types %}
+                            <option value="{{ value }}" {% if request.GET.type == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest text-brandBrown mb-3">Academic Level</h3>
+                    <select name="level" class="w-full border border-slate-200 rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-brandGreen transition bg-white italic">
+                        <option value="">All Academic Levels</option>
+                        {% for level in levels %}
+                            <option value="{{ level.slug }}" {% if request.GET.level == level.slug %}selected{% endif %}>{{ level.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest text-brandBrown mb-3">Subject Area</h3>
+                    <select name="subject" class="w-full border border-slate-200 rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-brandGreen transition bg-white italic">
+                        <option value="">All Academic Subjects</option>
+                        {% for subject in subjects %}
+                            <option value="{{ subject.slug }}" {% if request.GET.subject == subject.slug %}selected{% endif %}>{{ subject.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="pt-6 border-t border-slate-100">
+                    <label class="flex items-center cursor-pointer group">
+                        <input type="checkbox" name="low_data" value="true" class="w-4 h-4 text-brandGreen border-slate-300 rounded focus:ring-brandGreen" 
+                               {% if low_data_mode %}checked{% endif %}>
+                        <span class="ml-3 text-xs text-slate-600 group-hover:text-brandBrown transition italic font-medium">Enable Low-Data Mode</span>
+                    </label>
+                </div>
+            </form>
+        </aside>
+
+        <div class="flex-1">
+            {% include 'shop/partials/textbook_list_results.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

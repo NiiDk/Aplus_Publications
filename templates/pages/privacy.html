@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Privacy Policy | APLUS PUBLICATIONS{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-16 max-w-4xl">
+    <div class="mb-12 border-b pb-6">
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 italic uppercase tracking-tighter">Privacy Policy</h1>
+        <p class="text-slate-400 text-[10px] uppercase tracking-widest mt-2 italic">Institutional Data Protection Standards</p>
+    </div>
+
+    <div class="bg-white border p-10 rounded-sm shadow-sm academic-border">
+        <div class="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-8 italic">
+            <section>
+                <h2 class="text-brandBrown font-bold text-lg uppercase tracking-wider mb-4">1. Data Collection</h2>
+                <p>APLUS PUBLICATIONS collects essential academic metadata (Names, Institution, Academic Role) solely to provide tailored educational resources and professional services to students, teachers, and schools.</p>
+            </section>
+
+            <section>
+                <h2 class="text-brandBrown font-bold text-lg uppercase tracking-wider mb-4">2. Use of Information</h2>
+                <p>The information collected is used to process textbook acquisitions, manage institutional quote requests, and notify users of critical curriculum updates or new publication releases.</p>
+            </section>
+
+            <section>
+                <h2 class="text-brandBrown font-bold text-lg uppercase tracking-wider mb-4">3. Data Security</h2>
+                <p>We implement professional-grade security protocols to protect academic and financial data. We do not sell or share user data with third-party marketing entities.</p>
+            </section>
+
+            <section>
+                <h2 class="text-brandBrown font-bold text-lg uppercase tracking-wider mb-4">4. Academic Records</h2>
+                <p>Order history and resource download logs are maintained to help schools and individuals track their academic progression and resource utilization over time.</p>
+            </section>
+        </div>
+    </div>
+
+    <div class="mt-16 pt-8 border-t flex justify-between items-center">
+        <a href="{% url 'pages:home' %}" class="text-xs font-bold text-brandBrown hover:text-brandGreen uppercase tracking-widest italic flex items-center transition">
+            <span class="mr-2">←</span> Return Home
+        </a>
+        <p class="text-[10px] text-slate-400 italic font-bold uppercase">Last Updated: January 2024</p>
+    </div>
+</div>
+{% endblock %}

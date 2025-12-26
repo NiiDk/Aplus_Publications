@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: 'Inter', sans-serif; color: #1e293b; }
+        .container { max-width: 600px; margin: 0 auto; padding: 40px; border: 1px solid #e2e8f0; }
+        .header { border-bottom: 4px solid #96691D; padding-bottom: 20px; }
+        .alert { color: #96691D; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>System Alert: New Order</h2>
+        </div>
+        <p>A new academic order has been received on the platform.</p>
+        <ul>
+            <li><strong>Order ID:</strong> #{{ order.order_id }}</li>
+            <li><strong>Customer:</strong> {{ order.full_name }}</li>
+            <li><strong>Total Amount:</strong> GHS {{ order.total_amount }}</li>
+            <li><strong>Method:</strong> {{ order.get_payment_method_display }}</li>
+        </ul>
+        <p><a href="{{ site_url }}/admin/orders/order/{{ order.id }}/change/">Review Order in Admin Panel</a></p>
+    </div>
+</body>
+</html>

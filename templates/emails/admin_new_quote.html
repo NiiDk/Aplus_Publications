@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>System Alert: New Quote Request</h2>
+    <p>A new bulk quote request has been submitted by <strong>{{ quote.school_name }}</strong>.</p>
+    <p><strong>Contact Person:</strong> {{ quote.contact_person }}</p>
+    <p><strong>Estimated Qty:</strong> {{ quote.estimated_quantity }}</p>
+    <p><a href="{{ site_url }}/admin/orders/quoterequest/{{ quote.id }}/change/">Review Request</a></p>
+</body>
+</html>

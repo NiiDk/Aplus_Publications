@@ -3,9 +3,24 @@
 {% block title %}{{ book.title }} | APLUS PUBLICATIONS{% endblock %}
 
 {% block content %}
+<!-- Draggable Floating Cart Button -->
+<div id="draggable-cart" 
+     class="fixed z-[100] cursor-move touch-none"
+     style="bottom: 2rem; right: 2rem;">
+    <a href="{% url 'orders:cart_detail' %}" 
+       class="w-16 h-16 bg-brandSkyBlue text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform duration-200 group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        <span id="floating-cart-count" class="absolute -top-1 -right-1 bg-brandDeepBlue text-white text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
+            {{ cart_total_items|default:0 }}
+        </span>
+    </a>
+</div>
+
 <div class="container mx-auto px-4 py-12 max-w-5xl">
     <div class="mb-10">
-        <a href="{% url 'shop:textbook_list' %}" class="text-[10px] font-bold text-brandBrown hover:text-brandGreen uppercase tracking-[0.2em] italic flex items-center transition">
+        <a href="{% url 'shop:textbook_list' %}" class="text-[10px] font-bold text-brandBrown hover:text-brandSkyBlue uppercase tracking-[0.2em] italic flex items-center transition">
             <span class="mr-2">←</span> Return to Catalogue
         </a>
     </div>
@@ -20,7 +35,7 @@
                     {% else %}
                         <div class="w-full h-full flex items-center justify-center text-slate-200 italic text-[10px]">No Preview</div>
                     {% endif %}
-                    <div class="absolute top-3 left-3 bg-brandGreen text-slate-900 px-2 py-0.5 text-[8px] font-black uppercase tracking-tighter shadow-sm rounded-full">
+                    <div class="absolute top-3 left-3 bg-brandSkyBlue text-white px-2 py-0.5 text-[8px] font-black uppercase tracking-tighter shadow-sm rounded-full">
                         {{ book.curriculum }}
                     </div>
                 </div>
@@ -31,15 +46,15 @@
         <div class="md:col-span-7 lg:col-span-8 space-y-10">
             <div>
                 <div class="flex items-center space-x-3 mb-4">
-                    <span class="text-[9px] font-bold uppercase tracking-widest text-brandGreen bg-slate-50 px-2 py-1">{{ book.subject.name }}</span>
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-brandSkyBlue bg-slate-50 px-2 py-1">{{ book.subject.name }}</span>
                     <span class="text-slate-200 text-xs">•</span>
                     <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{{ book.academic_level.name }}</span>
                 </div>
-                <h1 class="text-3xl font-bold text-slate-900 tracking-tight italic leading-tight mb-4">{{ book.title }}</h1>
-                <p class="text-xl font-black text-brandBrown italic tracking-tighter">GHS {{ book.price }}</p>
+                <h1 class="text-3xl font-bold text-brandDeepBlue tracking-tight italic leading-tight mb-4">{{ book.title }}</h1>
+                <p class="text-xl font-black text-brandSkyBlue italic tracking-tighter">GHS {{ book.price }}</p>
             </div>
 
-            <div class="academic-border pl-6 py-1">
+            <div class="academic-border pl-6 py-1 border-brandSkyBlue">
                 <p class="text-slate-600 text-sm leading-relaxed italic">
                     {{ book.description }}
                 </p>
@@ -63,7 +78,7 @@
                       hx-target="this">
                     {% csrf_token %}
                     <input type="hidden" name="quantity" value="1">
-                    <button type="submit" class="w-full bg-slate-900 text-white py-4 rounded-sm text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brandGreen hover:text-slate-900 transition-all shadow-xl flex items-center justify-center">
+                    <button type="submit" class="w-full bg-brandDeepBlue text-white py-4 rounded-sm text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brandSkyBlue transition-all shadow-xl flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
@@ -81,17 +96,74 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-6">
             {% for rec in recommendations %}
             <a href="{{ rec.get_absolute_url }}" class="group block">
-                <div class="aspect-[4/5] bg-white border border-slate-100 p-2 mb-4 group-hover:border-brandGreen transition-colors shadow-sm rounded-sm">
+                <div class="aspect-[4/5] bg-white border border-slate-100 p-2 mb-4 group-hover:border-brandSkyBlue transition-colors shadow-sm rounded-sm">
                     {% if rec.cover_image %}
                         <img src="{{ rec.cover_image.url }}" alt="{{ rec.title }}" class="w-full h-full object-cover rounded-sm">
                     {% endif %}
                 </div>
-                <p class="text-[8px] font-bold text-brandGreen uppercase tracking-tighter mb-1">{{ rec.subject.name|truncatechars:15 }}</p>
-                <h4 class="text-[10px] font-bold text-slate-800 leading-tight group-hover:text-brandBrown transition italic line-clamp-2">{{ rec.title }}</h4>
+                <p class="text-[8px] font-bold text-brandSkyBlue uppercase tracking-tighter mb-1">{{ rec.subject.name|truncatechars:15 }}</p>
+                <h4 class="text-[10px] font-bold text-slate-800 leading-tight group-hover:text-brandDeepBlue transition italic line-clamp-2">{{ rec.title }}</h4>
             </a>
             {% endfor %}
         </div>
     </section>
     {% endif %}
 </div>
+
+<script>
+    const dragItem = document.querySelector("#draggable-cart");
+    let active = false;
+    let currentX;
+    let currentY;
+    let initialX;
+    let initialY;
+    let xOffset = 0;
+    let yOffset = 0;
+
+    function dragStart(e) {
+        if (e.type === "touchstart") {
+            initialX = e.touches[0].clientX - xOffset;
+            initialY = e.touches[0].clientY - yOffset;
+        } else {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+        }
+        if (e.target === dragItem || dragItem.contains(e.target)) {
+            active = true;
+        }
+    }
+
+    function dragEnd(e) {
+        initialX = currentX;
+        initialY = currentY;
+        active = false;
+    }
+
+    function drag(e) {
+        if (active) {
+            e.preventDefault();
+            if (e.type === "touchmove") {
+                currentX = e.touches[0].clientX - initialX;
+                currentY = e.touches[0].clientY - initialY;
+            } else {
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+            }
+            xOffset = currentX;
+            yOffset = currentY;
+            setTranslate(currentX, currentY, dragItem);
+        }
+    }
+
+    function setTranslate(xPos, yPos, el) {
+        el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+    }
+
+    document.addEventListener("touchstart", dragStart, false);
+    document.addEventListener("touchend", dragEnd, false);
+    document.addEventListener("touchmove", drag, false);
+    document.addEventListener("mousedown", dragStart, false);
+    document.addEventListener("mouseup", dragEnd, false);
+    document.addEventListener("mousemove", drag, false);
+</script>
 {% endblock %}

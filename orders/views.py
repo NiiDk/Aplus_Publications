@@ -33,6 +33,7 @@ def cart_add(request, product_id):
         cart_item.save()
     
     if request.headers.get('HX-Request'):
+        # Return a success message and update BOTH cart counts (Header + Floating)
         return HttpResponse(
             f'<div class="w-full bg-brandGreen text-slate-900 py-4 rounded-sm font-bold uppercase tracking-widest text-center shadow-lg flex items-center justify-center">'
             f'   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">'
@@ -40,7 +41,10 @@ def cart_add(request, product_id):
             f'   </svg>'
             f'   Added!'
             f'</div>'
-            f'<span id="cart-count" hx-swap-oob="true" class="absolute -top-2 -right-2 bg-brandBrown text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">'
+            f'<span id="cart-count" hx-swap-oob="true" class="absolute -top-2 -right-2 bg-brandSkyBlue text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">'
+            f'   {cart.total_items}'
+            f'</span>'
+            f'<span id="floating-cart-count" hx-swap-oob="true" class="absolute -top-1 -right-1 bg-brandDeepBlue text-white text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">'
             f'   {cart.total_items}'
             f'</span>'
         )
@@ -66,7 +70,8 @@ def cart_update(request, item_id):
         
         item_total = item.product.price * item.quantity
         html = render_to_string('orders/partials/cart_summary.html', {'cart': cart})
-        html += f'<span id="cart-count" hx-swap-oob="true" class="absolute -top-2 -right-2 bg-brandBrown text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">{cart.total_items}</span>'
+        html += f'<span id="cart-count" hx-swap-oob="true" class="absolute -top-2 -right-2 bg-brandSkyBlue text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">{cart.total_items}</span>'
+        html += f'<span id="floating-cart-count" hx-swap-oob="true" class="absolute -top-1 -right-1 bg-brandDeepBlue text-white text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">{cart.total_items}</span>'
         html += f'<td id="item-total-{item.id}" hx-swap-oob="true" class="px-6 py-6 text-right font-bold text-slate-900 italic">GHS {item_total}</td>'
         return HttpResponse(html)
 
@@ -80,7 +85,8 @@ def cart_remove(request, item_id):
     
     if request.headers.get('HX-Request'):
         html = render_to_string('orders/partials/cart_summary.html', {'cart': cart})
-        html += f'<span id="cart-count" hx-swap-oob="true" class="absolute -top-2 -right-2 bg-brandBrown text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">{cart.total_items}</span>'
+        html += f'<span id="cart-count" hx-swap-oob="true" class="absolute -top-2 -right-2 bg-brandSkyBlue text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">{cart.total_items}</span>'
+        html += f'<span id="floating-cart-count" hx-swap-oob="true" class="absolute -top-1 -right-1 bg-brandDeepBlue text-white text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">{cart.total_items}</span>'
         return HttpResponse(html)
 
     messages.info(request, "Item removed from cart.")

@@ -80,9 +80,33 @@
             </div>
         </nav>
 
-        <!-- Horizontal Sub-Navigation Items -->
-        <div class="bg-brandDeepBlue text-white overflow-x-auto whitespace-nowrap scrollbar-hide">
-            <div class="container mx-auto px-4 flex space-x-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] italic">
+        <!-- Horizontal Sub-Navigation with Scroll Arrows -->
+        <div class="bg-brandDeepBlue text-white relative group/nav" x-data="{ 
+            canScrollLeft: false, 
+            canScrollRight: false,
+            updateArrows() {
+                const el = this.$refs.navScroll;
+                this.canScrollLeft = el.scrollLeft > 0;
+                this.canScrollRight = el.scrollLeft < (el.scrollWidth - el.clientWidth - 1);
+            },
+            scroll(amount) {
+                this.$refs.navScroll.scrollBy({ left: amount, behavior: 'smooth' });
+            }
+        }" x-init="setTimeout(() => updateArrows(), 100)">
+            
+            <!-- Left Arrow -->
+            <button x-show="canScrollLeft" 
+                    @click="scroll(-150)" 
+                    class="absolute left-0 top-0 bottom-0 z-10 px-2 bg-gradient-to-r from-brandDeepBlue to-transparent text-white hover:text-brandSkyBlue transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+
+            <!-- Scrollable Content -->
+            <div x-ref="navScroll" 
+                 @scroll="updateArrows()"
+                 class="container mx-auto px-4 flex space-x-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] italic overflow-x-auto whitespace-nowrap scrollbar-hide">
                 <a href="{% url 'pages:home' %}" class="hover:text-brandSkyBlue transition">Home</a>
                 <a href="{% url 'shop:textbook_list' %}" class="hover:text-brandSkyBlue transition">Catalogue</a>
                 <a href="{% url 'resources:resource_list' %}" class="hover:text-brandSkyBlue transition">Resources</a>
@@ -97,9 +121,18 @@
                     <a href="{% url 'accounts:register' %}" class="hover:text-brandSkyBlue transition text-brandSkyBlue">Register</a>
                 {% endif %}
             </div>
+
+            <!-- Right Arrow -->
+            <button x-show="canScrollRight" 
+                    @click="scroll(150)" 
+                    class="absolute right-0 top-0 bottom-0 z-10 px-2 bg-gradient-to-l from-brandDeepBlue to-transparent text-white hover:text-brandSkyBlue transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
         </div>
 
-        <!-- Menu Drawer -->
+        <!-- Menu Drawer Overlay & Content -->
         <div x-show="open" x-cloak class="fixed inset-0 z-[100] overflow-hidden" role="dialog" aria-modal="true">
             <div class="absolute inset-0 overflow-hidden">
                 <div x-show="open" x-transition:enter="duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="duration-500" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="open = false" class="absolute inset-0 bg-slate-900 bg-opacity-75 transition-opacity"></div>
@@ -214,7 +247,7 @@
             </div>
             
             <div class="pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-[10px] italic">
-                <div class="text-slate-400 uppercase tracking-widest">
+                <div class="text-slate-500 uppercase tracking-widest">
                     &copy; {% now "Y" %} APLUS Publications. All Rights Reserved. Strictly Academic.
                 </div>
                 <div class="text-slate-400 group uppercase tracking-widest">

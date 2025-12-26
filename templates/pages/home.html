@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section class="bg-slate-900 text-white py-20">
+<section class="bg-brandDeepBlue text-white py-20">
     <div class="container mx-auto px-4 text-center">
         <h1 class="text-4xl md:text-6xl font-bold tracking-tighter mb-6 uppercase">
-            <span class="text-brandGreen italic text-6xl md:text-8xl">A+</span> <br>
+            <span class="text-brandSkyBlue italic text-6xl md:text-8xl">A+</span> <br>
             PUBLICATIONS
         </h1>
-        <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 italic">
+        <p class="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 italic">
             Empowering the next generation of scholars with strictly academic, curriculum-aligned resources.
         </p>
         <div class="flex justify-center space-x-4">
-            <a href="{% url 'shop:textbook_list' %}" class="bg-brandGreen text-slate-900 px-8 py-3 rounded-sm font-bold uppercase tracking-widest hover:bg-brandBrown hover:text-white transition">Explore Shop</a>
-            <a href="{% url 'resources:resource_list' %}" class="border border-slate-700 px-8 py-3 rounded-sm font-bold uppercase tracking-widest hover:bg-slate-800 transition">GES Resources</a>
+            <a href="{% url 'shop:textbook_list' %}" class="bg-brandSkyBlue text-white px-8 py-3 rounded-sm font-bold uppercase tracking-widest hover:bg-white hover:text-brandDeepBlue transition-all shadow-lg">Explore Shop</a>
+            <a href="{% url 'resources:resource_list' %}" class="border border-white/30 text-white px-8 py-3 rounded-sm font-bold uppercase tracking-widest hover:bg-white/10 transition">GES Resources</a>
         </div>
     </div>
 </section>
@@ -21,24 +21,24 @@
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
             <!-- Professional Value Prop 1 -->
-            <div class="academic-border p-8 bg-gray-50 group hover:bg-white hover:shadow-xl transition-all duration-300">
-                <h3 class="font-bold text-sm uppercase tracking-widest mb-4 text-brandBrown italic border-b border-brandGreen inline-block pb-1">Curriculum-Aligned</h3>
+            <div class="academic-border p-8 bg-gray-50 group hover:bg-white hover:shadow-xl transition-all duration-300 border-brandSkyBlue">
+                <h3 class="font-bold text-sm uppercase tracking-widest mb-4 text-brandDeepBlue italic border-b border-brandSkyBlue inline-block pb-1">Curriculum-Aligned</h3>
                 <p class="text-slate-600 text-sm leading-relaxed italic">
                     Rigorously verified educational content engineered to meet exact NaCCA and WAEC standards for comprehensive academic success.
                 </p>
             </div>
             
             <!-- Professional Value Prop 2 -->
-            <div class="academic-border p-8 bg-gray-50 group hover:bg-white hover:shadow-xl transition-all duration-300">
-                <h3 class="font-bold text-sm uppercase tracking-widest mb-4 text-brandBrown italic border-b border-brandGreen inline-block pb-1">Universal Access</h3>
+            <div class="academic-border p-8 bg-gray-50 group hover:bg-white hover:shadow-xl transition-all duration-300 border-brandSkyBlue">
+                <h3 class="font-bold text-sm uppercase tracking-widest mb-4 text-brandDeepBlue italic border-b border-brandSkyBlue inline-block pb-1">Universal Access</h3>
                 <p class="text-slate-600 text-sm leading-relaxed italic">
-                    Mobile-optimized resources designed for seamless performance across all devices and diverse network environments.
+                    Mobile-optimised resources designed for seamless performance across all devices and diverse network environments.
                 </p>
             </div>
             
             <!-- Professional Value Prop 3 -->
-            <div class="academic-border p-8 bg-gray-50 group hover:bg-white hover:shadow-xl transition-all duration-300">
-                <h3 class="font-bold text-sm uppercase tracking-widest mb-4 text-brandBrown italic border-b border-brandGreen inline-block pb-1">Educational Lifecycle</h3>
+            <div class="academic-border p-8 bg-gray-50 group hover:bg-white hover:shadow-xl transition-all duration-300 border-brandSkyBlue">
+                <h3 class="font-bold text-sm uppercase tracking-widest mb-4 text-brandDeepBlue italic border-b border-brandSkyBlue inline-block pb-1">Educational Lifecycle</h3>
                 <p class="text-slate-600 text-sm leading-relaxed italic">
                     A comprehensive portfolio of publications supporting the entire academic journey, from Primary through to Tertiary levels.
                 </p>

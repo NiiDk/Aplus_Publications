@@ -1,32 +1,37 @@
 {% extends 'base.html' %}
 
-{% block title %}Academic Resources | Aplus Publications{% endblock %}
+{% block title %}Academic Resources | APLUS PUBLICATIONS{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <div class="mb-12 border-b pb-6">
-        <h1 class="text-3xl font-bold tracking-tight text-slate-900 italic uppercase">GES & Academic Resources</h1>
-        <p class="text-slate-500 text-sm mt-1">Official curricula, academic calendars, and examination timetables.</p>
+    <div class="mb-12 border-b pb-6 flex justify-between items-end">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 italic uppercase tracking-tighter">GES & Academic Resources</h1>
+            <p class="text-slate-500 text-xs mt-1 italic uppercase tracking-widest font-bold">Official Curricula, Calendars & Timetables</p>
+        </div>
+        <div class="hidden md:flex items-center text-brandSkyBlue font-bold text-[10px] uppercase tracking-widest italic">
+            Institutional Repository
+        </div>
     </div>
 
     <div class="flex flex-col md:flex-row gap-12">
         <!-- Sidebar Filters -->
         <aside class="w-full md:w-64 space-y-8">
             <section>
-                <h3 class="text-xs font-bold uppercase tracking-widest text-brandBrown mb-4 italic">Resource Category</h3>
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-brandDeepBlue mb-6 italic border-b border-brandSkyBlue inline-block pb-1">Resource Category</h3>
                 <div class="space-y-2">
-                    <a href="?type=" class="block text-sm p-2 rounded {% if not request.GET.type %}bg-brandGreen text-slate-900 font-bold{% else %}text-slate-600 hover:bg-slate-100{% endif %}">All Resources</a>
-                    <a href="?type=CURRICULUM" class="block text-sm p-2 rounded {% if request.GET.type == 'CURRICULUM' %}bg-brandGreen text-slate-900 font-bold{% else %}text-slate-600 hover:bg-slate-100{% endif %}">GES Curricula</a>
-                    <a href="?type=CALENDAR" class="block text-sm p-2 rounded {% if request.GET.type == 'CALENDAR' %}bg-brandGreen text-slate-900 font-bold{% else %}text-slate-600 hover:bg-slate-100{% endif %}">Academic Calendars</a>
-                    <a href="?type=TIMETABLE" class="block text-sm p-2 rounded {% if request.GET.type == 'TIMETABLE' %}bg-brandGreen text-slate-900 font-bold{% else %}text-slate-600 hover:bg-slate-100{% endif %}">Exam Timetables</a>
-                    <a href="?type=CIRCULAR" class="block text-sm p-2 rounded {% if request.GET.type == 'CIRCULAR' %}bg-brandGreen text-slate-900 font-bold{% else %}text-slate-600 hover:bg-slate-100{% endif %}">Official Circulars</a>
+                    <a href="?type=" class="block text-xs uppercase font-bold tracking-widest p-3 rounded-sm transition-all {% if not request.GET.type %}bg-brandSkyBlue text-white shadow-lg{% else %}text-slate-500 hover:bg-slate-100{% endif %}">All Resources</a>
+                    <a href="?type=CURRICULUM" class="block text-xs uppercase font-bold tracking-widest p-3 rounded-sm transition-all {% if request.GET.type == 'CURRICULUM' %}bg-brandSkyBlue text-white shadow-lg{% else %}text-slate-500 hover:bg-slate-100{% endif %}">GES Curricula</a>
+                    <a href="?type=CALENDAR" class="block text-xs uppercase font-bold tracking-widest p-3 rounded-sm transition-all {% if request.GET.type == 'CALENDAR' %}bg-brandSkyBlue text-white shadow-lg{% else %}text-slate-500 hover:bg-slate-100{% endif %}">Academic Calendars</a>
+                    <a href="?type=TIMETABLE" class="block text-xs uppercase font-bold tracking-widest p-3 rounded-sm transition-all {% if request.GET.type == 'TIMETABLE' %}bg-brandSkyBlue text-white shadow-lg{% else %}text-slate-500 hover:bg-slate-100{% endif %}">Exam Timetables</a>
+                    <a href="?type=CIRCULAR" class="block text-xs uppercase font-bold tracking-widest p-3 rounded-sm transition-all {% if request.GET.type == 'CIRCULAR' %}bg-brandSkyBlue text-white shadow-lg{% else %}text-slate-500 hover:bg-slate-100{% endif %}">Official Circulars</a>
                 </div>
             </section>
 
-            <section class="bg-slate-900 p-6 rounded-sm">
-                <h4 class="text-[10px] font-bold uppercase tracking-widest text-brandGreen mb-3">Institutional Support</h4>
-                <p class="text-xs text-slate-400 italic leading-relaxed">
-                    Can't find a specific GES document? Contact our academic coordination unit for assistance.
+            <section class="bg-brandDeepBlue p-6 rounded-sm shadow-xl text-white">
+                <h4 class="text-[9px] font-black uppercase tracking-[0.3em] text-brandSkyBlue mb-3">Institutional Support</h4>
+                <p class="text-[11px] text-slate-300 italic leading-relaxed">
+                    Cannot find a specific GES document? Contact our academic coordination unit for formal assistance.
                 </p>
             </section>
         </aside>
@@ -35,30 +40,28 @@
         <div class="flex-1">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for resource in resources %}
-                <div class="bg-white border p-6 rounded-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                <div class="bg-white border border-slate-100 p-6 rounded-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                     <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-slate-100 text-slate-500">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-[8px] font-black uppercase tracking-widest px-2 py-1 bg-slate-50 text-brandDeepBlue border border-slate-100">
                                 {{ resource.get_resource_type_display }}
                             </span>
-                            <span class="text-[10px] font-bold text-brandGreen italic">{{ resource.download_count }} Downloads</span>
+                            <span class="text-[9px] font-bold text-brandSkyBlue italic tracking-tighter">{{ resource.download_count }} Accesses</span>
                         </div>
-                        <h3 class="font-bold text-slate-800 leading-snug mb-2">{{ resource.title }}</h3>
-                        <p class="text-xs text-slate-500 italic line-clamp-2 mb-4">{{ resource.description }}</p>
+                        <h3 class="font-bold text-slate-800 leading-snug mb-3 italic group-hover:text-brandDeepBlue transition-colors">{{ resource.title }}</h3>
+                        <p class="text-[11px] text-slate-500 italic line-clamp-3 mb-6 leading-relaxed">{{ resource.description }}</p>
                     </div>
                     
-                    <a href="{% url 'resources:resource_download' resource.slug %}" target="_blank" class="block text-center bg-slate-900 text-white py-3 text-xs font-bold uppercase tracking-widest hover:bg-brandBrown transition">
+                    <a href="{% url 'resources:resource_download' resource.slug %}" target="_blank" class="block text-center bg-brandDeepBlue text-white py-3 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brandSkyBlue transition-all shadow-md">
                         Download PDF
                     </a>
                 </div>
                 {% empty %}
-                <div class="col-span-full py-20 text-center text-slate-400 italic">
+                <div class="col-span-full py-24 text-center text-slate-400 italic bg-white border border-dashed rounded-sm">
                     No academic resources currently listed in this category.
                 </div>
                 {% endfor %}
             </div>
-
-            <!-- Pagination logic here if needed -->
         </div>
     </div>
 </div>
